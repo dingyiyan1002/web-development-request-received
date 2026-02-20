@@ -1,0 +1,52 @@
+// level1-array-sum.ts - 数组求和可视化
+import { VisualizationData } from '../types';
+
+export const level1ArraySumData: VisualizationData = {
+  id: 'level1-array-sum',
+  title: 'for循环数组求和',
+  filename: 'array-sum.c',
+  badge: '🔢 数组循环',
+  code: [
+    '#include <stdio.h>',
+    '#include <stdint.h>',
+    '',
+    'int main(void)',
+    '{',
+    '    uint8_t data[5] = {10, 20, 30, 40, 50};',
+    '    uint8_t sum = 0;',
+    '',
+    '    for (uint8_t i = 0; i < 5; i++) {',
+    '        sum += data[i];',
+    '    }',
+    '',
+    '    printf("Sum = %u\\n", sum);',
+    '    return 0;',
+    '}',
+  ],
+  steps: [
+    { line: 0, description: '程序开始', frames: [{ name: 'main', vars: [] }],
+      vizBlocks: [{ type: 'rule', data: { title: 'for循环', content: '遍历数组求和', color: 'blue' } }] },
+    { line: 5, description: 'data数组初始化', frames: [{ name: 'main', vars: [{ type: 'uint8_t[5]', name: 'data', value: '[10,20,30,40,50]', state: 'changed' }] }],
+      vizBlocks: [] },
+    { line: 6, description: 'sum = 0', frames: [{ name: 'main', vars: [{ type: 'uint8_t[5]', name: 'data', value: '[10,20,30,40,50]', state: '' }, { type: 'uint8_t', name: 'sum', value: '0', state: 'changed' }] }],
+      vizBlocks: [] },
+    { line: 8, description: 'i=0, sum+=10', frames: [{ name: 'main', vars: [{ type: 'uint8_t[5]', name: 'data', value: '[10,20,30,40,50]', state: '' }, { type: 'uint8_t', name: 'sum', value: '10', state: 'changed' }, { type: 'uint8_t', name: 'i', value: '0', state: '' }] }],
+      vizBlocks: [] },
+    { line: 8, description: 'i=1, sum+=20', frames: [{ name: 'main', vars: [{ type: 'uint8_t[5]', name: 'data', value: '[10,20,30,40,50]', state: '' }, { type: 'uint8_t', name: 'sum', value: '30', state: 'changed' }, { type: 'uint8_t', name: 'i', value: '1', state: '' }] }],
+      vizBlocks: [] },
+    { line: 8, description: 'i=2, sum+=30', frames: [{ name: 'main', vars: [{ type: 'uint8_t[5]', name: 'data', value: '[10,20,30,40,50]', state: '' }, { type: 'uint8_t', name: 'sum', value: '60', state: 'changed' }, { type: 'uint8_t', name: 'i', value: '2', state: '' }] }],
+      vizBlocks: [] },
+    { line: 8, description: 'i=3, sum+=40', frames: [{ name: 'main', vars: [{ type: 'uint8_t[5]', name: 'data', value: '[10,20,30,40,50]', state: '' }, { type: 'uint8_t', name: 'sum', value: '100', state: 'changed' }, { type: 'uint8_t', name: 'i', value: '3', state: '' }] }],
+      vizBlocks: [] },
+    { line: 8, description: 'i=4, sum+=50', frames: [{ name: 'main', vars: [{ type: 'uint8_t[5]', name: 'data', value: '[10,20,30,40,50]', state: '' }, { type: 'uint8_t', name: 'sum', value: '150', state: 'changed' }, { type: 'uint8_t', name: 'i', value: '4', state: '' }] }],
+      vizBlocks: [] },
+    { line: 8, description: 'i=5, 循环结束', frames: [{ name: 'main', vars: [{ type: 'uint8_t[5]', name: 'data', value: '[10,20,30,40,50]', state: '' }, { type: 'uint8_t', name: 'sum', value: '150', state: '' }] }],
+      vizBlocks: [] },
+    { line: 12, description: '输出Sum=150', frames: [{ name: 'main', vars: [{ type: 'uint8_t', name: 'sum', value: '150', state: 'reading' }] }],
+      vizBlocks: [{ type: 'stdout', data: { content: 'Sum = 150' } }] },
+    { line: 14, description: '程序结束', frames: [{ name: 'main', vars: [] }],
+      vizBlocks: [{ type: 'summary', data: { title: '数组求和', points: ['for循环遍历', 'sum+=data[i]', '10+20+30+40+50=150'] } }] },
+  ],
+};
+
+export default level1ArraySumData;

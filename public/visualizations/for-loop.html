@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>for循环 - 可视化演示</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --anim-speed: 3000ms;
+      --bounce-range: -12px;
+      --bounce-scale: 1.12;
+    }
+    * { scrollbar-width: thin; scrollbar-color: #3a3a4a #0d1117; }
+    *::-webkit-scrollbar { width: 6px; height: 6px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb { background: #3a3a4a; border-radius: 3px; }
+    body {
+      background: #0a0e17;
+      color: #c9d1d9;
+      font-family: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+      overflow: hidden;
+      height: 100vh;
+      margin: 0;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .anim-fade-in { animation: fadeInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    @keyframes bubbleUp {
+      0% { opacity: 0; transform: translateY(30px) scale(0.85); filter: blur(4px); }
+      40% { opacity: 1; filter: blur(0px); }
+      70% { transform: translateY(-4px) scale(1.02); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+    }
+    .anim-bubble-up { animation: bubbleUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    @keyframes pushUp {
+      from { transform: translateY(8px); opacity: 0.7; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .anim-push-up { animation: pushUp 0.35s ease-out forwards; }
+    @keyframes newMsgGlow {
+      0%, 100% { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); }
+      50% { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 0 15px rgba(255,255,255,0.03); }
+    }
+    @keyframes bigBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(var(--bounce-range)) scale(var(--bounce-scale)); }
+    }
+    .anim-bounce { animation: bigBounce var(--anim-speed) cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+    @keyframes scanLight {
+      0% { left: -60%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { left: 160%; opacity: 0; }
+    }
+    @keyframes dangerPulse {
+      0%, 100% { box-shadow: 0 0 5px rgba(239,68,68,0.2), 0 0 15px rgba(239,68,68,0.1); }
+      50% { box-shadow: 0 0 15px rgba(239,68,68,0.4), 0 0 30px rgba(239,68,68,0.2); }
+    }
+    @keyframes dangerShake {
+      0%, 100% { transform: translateX(0) rotate(0deg); }
+      25% { transform: translateX(-2px) rotate(-1.5deg); }
+      75% { transform: translateX(2px) rotate(1.5deg); }
+    }
+    @keyframes boxPop {
+      0% { transform: scale(0) rotate(-12deg); opacity: 0; }
+      50% { transform: scale(1.12) rotate(3deg); }
+      70% { transform: scale(0.96) rotate(-1deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes valuePop {
+      0% { transform: scale(0.3) translateY(8px); opacity: 0; }
+      50% { transform: scale(1.15) translateY(-3px); }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .anim-value-pop { animation: valuePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes dashFlow { to { stroke-dashoffset: -24; } }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes orbGlow {
+      0%, 100% { box-shadow: 0 0 8px var(--orb-color), 0 0 20px var(--orb-color); }
+      50% { box-shadow: 0 0 12px var(--orb-color), 0 0 30px var(--orb-color); }
+    }
+    @keyframes orbTrail {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
+    }
+    @keyframes breathe {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .code-line-flow {
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.3s ease,
+                  box-shadow 0.4s ease,
+                  opacity 0.4s ease,
+                  border-color 0.3s ease;
+      transform-origin: left center;
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      margin: 1px 6px 1px 2px;
+      border: 1px solid transparent;
+    }
+    .code-line-flow.is-current {
+      transform: scale(1.06) translateX(10px);
+      z-index: 20;
+      border-color: rgba(250, 204, 21, 0.2);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4),
+                  inset 0 0 30px rgba(250, 204, 21, 0.03);
+    }
+    .code-line-flow.is-current::after {
+      content: '';
+      position: absolute; top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(250,204,21,0.08), transparent);
+      animation: scanLight 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .code-line-flow.is-executed {
+      opacity: 0.3;
+      transform: scale(0.97);
+    }
+    .ctrl-btn {
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(12px);
+      color: #8b949e;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      user-select: none;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .ctrl-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      border-color: rgba(255,255,255,0.12);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      color: #e6edf3;
+    }
+    .ctrl-btn:disabled {
+      opacity: 0.25; cursor: not-allowed;
+      transform: none !important;
+    }
+    .ctrl-btn.btn-play {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-color: rgba(16,185,129,0.4);
+      color: #fff;
+      box-shadow: 0 2px 15px rgba(16,185,129,0.25);
+    }
+    .ctrl-btn.btn-pause {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border-color: rgba(245,158,11,0.4);
+      color: #fff;
+    }
+    .ctrl-btn.btn-reset {
+      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.05));
+      border-color: rgba(99,102,241,0.2);
+    }
+    .glass-panel {
+      background: linear-gradient(135deg, rgba(22,27,34,0.95), rgba(22,27,34,0.85));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+    }
+    input[type="range"] {
+      -webkit-appearance: none; height: 4px;
+      border-radius: 2px; background: rgba(255,255,255,0.1); outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px;
+      border-radius: 50%; background: #fff; cursor: pointer;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useCallback, useRef, useMemo } = React;
+
+    function App() {
+      const [step, setStep] = useState(0);
+      const maxSteps = 14;
+      const [isPlaying, setIsPlaying] = useState(false);
+      const [speed, setSpeed] = useState(3000);
+      const [cursorVisible, setCursorVisible] = useState(true);
+      const [isFullscreen, setIsFullscreen] = useState(false);
+      const [executedLines, setExecutedLines] = useState([]);
+      const [highlightVar, setHighlightVar] = useState(null);
+      const codeContainerRef = useRef(null);
+      const lineRefs = useRef(new Map());
+      const [linePositions, setLinePositions] = useState(new Map());
+      const [prevLine, setPrevLine] = useState(-1);
+      const msgScrollRef = useRef(null);
+      const [output, setOutput] = useState([]);
+      
+      const [i, setI] = useState(0);
+      const [sum, setSum] = useState(0);
+
+      const code = [
+        '#include <stdio.h>',
+        'int main() {',
+        '    int sum = 0;',
+        '    for (int i = 0; i < 3; i++) {',
+        '        sum += i;',
+        '    }',
+        '    printf("sum = %d\\n", sum);',
+        '    return 0;',
+        '}'
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setCursorVisible(v => !v), 530);
+        return () => clearInterval(timer);
+      }, []);
+
+      useEffect(() => {
+        const update = () => {
+          const container = codeContainerRef.current;
+          if (!container) return;
+          const containerRect = container.getBoundingClientRect();
+          const positions = new Map();
+          lineRefs.current.forEach((el, num) => {
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              positions.set(num, rect.top - containerRect.top + rect.height / 2);
+            }
+          });
+          setLinePositions(positions);
+        };
+        update();
+        const timer = setTimeout(update, 100);
+        window.addEventListener('resize', update);
+        return () => { window.removeEventListener('resize', update); clearTimeout(timer); };
+      }, [step]);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setPrevLine(currentLine), 600);
+        return () => clearTimeout(timer);
+      }, [currentLine]);
+
+      useEffect(() => {
+        if (msgScrollRef.current) msgScrollRef.current.scrollTop = 0;
+      }, [explanations.length]);
+
+      useEffect(() => {
+        document.documentElement.style.setProperty('--anim-speed', `${speed}ms`);
+      }, [speed]);
+
+      const currentLine = useMemo(() => {
+        const lineMap = { 0: 1, 1: 2, 2: 3, 3: 4, 4: 4, 5: 4, 6: 5, 7: 4, 8: 4, 9: 4, 10: 6, 11: 7, 12: 7, 13: 8 };
+        return lineMap[step] || 0;
+      }, [step]);
+
+      const nextStep = useCallback(() => {
+        setStep(prev => {
+          if (prev >= maxSteps) { setIsPlaying(false); return prev; }
+          return prev + 1;
+        });
+      }, []);
+
+      const prevStep = useCallback(() => setStep(prev => Math.max(0, prev - 1)), []);
+
+      const reset = useCallback(() => {
+        setStep(0);
+        setIsPlaying(false);
+        setPrevLine(-1);
+        setOutput([]);
+        setExecutedLines([]);
+        setHighlightVar(null);
+        setI(0);
+        setSum(0);
+      }, []);
+
+      useEffect(() => {
+        if (isPlaying && step < maxSteps) {
+          const timer = setTimeout(nextStep, speed);
+          return () => clearTimeout(timer);
+        } else if (step >= maxSteps) setIsPlaying(false);
+      }, [isPlaying, step, speed, nextStep]);
+
+      const toggleFullscreen = () => {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+        else document.exitFullscreen().catch(()=>{});
+      };
+      useEffect(() => {
+        const h = () => setIsFullscreen(!!document.fullscreenElement);
+        document.addEventListener('fullscreenchange', h);
+        return () => document.removeEventListener('fullscreenchange', h);
+      }, []);
+
+      useEffect(() => {
+        const h = (e) => {
+          switch(e.key) {
+            case 'ArrowRight': case ' ': e.preventDefault(); nextStep(); break;
+            case 'ArrowLeft': e.preventDefault(); prevStep(); break;
+            case 'Enter': e.preventDefault(); setIsPlaying(p => !p); break;
+            case 'r': case 'R': e.preventDefault(); reset(); break;
+            case 'f': case 'F': e.preventDefault(); toggleFullscreen(); break;
+          }
+        };
+        window.addEventListener('keydown', h);
+        return () => window.removeEventListener('keydown', h);
+      }, [nextStep, prevStep, reset]);
+
+      useEffect(() => {
+        setHighlightVar(null);
+        setExecutedLines([]);
+        switch(step) {
+          case 0:
+            setI(0); setSum(0); setOutput([]);
+            break;
+          case 1:
+            setExecutedLines([1]);
+            break;
+          case 2:
+            setExecutedLines([1, 2]);
+            setHighlightVar('sum');
+            setSum(0);
+            break;
+          case 3:
+            setExecutedLines([1, 2, 3]);
+            setHighlightVar('i');
+            setI(0);
+            break;
+          case 4:
+          case 5:
+            setExecutedLines([1, 2, 3, 4]);
+            setHighlightVar('i');
+            break;
+          case 6:
+            setExecutedLines([1, 2, 3, 4, 5]);
+            setHighlightVar('sum');
+            setSum(0);
+            break;
+          case 7:
+            setExecutedLines([1, 2, 3, 4, 5, 4]);
+            setHighlightVar('i');
+            setI(1);
+            break;
+          case 8:
+            setExecutedLines([1, 2, 3, 4, 5, 4, 5]);
+            setHighlightVar('sum');
+            setSum(1);
+            break;
+          case 9:
+            setExecutedLines([1, 2, 3, 4, 5, 4, 5, 4]);
+            setHighlightVar('i');
+            setI(2);
+            break;
+          case 10:
+            setExecutedLines([1, 2, 3, 4, 5, 4, 5, 4, 5]);
+            setHighlightVar('sum');
+            setSum(3);
+            break;
+          case 11:
+            setExecutedLines([1, 2, 3, 4, 5, 4, 5, 4, 5, 4]);
+            setHighlightVar('i');
+            setI(3);
+            break;
+          case 12:
+            setExecutedLines([1, 2, 3, 4, 5, 4, 5, 4, 5, 4, 6]);
+            setOutput(['sum = 3']);
+            break;
+          case 13:
+            setExecutedLines([1, 2, 3, 4, 5, 4, 5, 4, 5, 4, 6, 7]);
+            break;
+        }
+      }, [step]);
+
+      const explanations = useMemo(() => {
+        const items = [];
+        if (step >= 1) items.push({ id: 's1', icon: '📋', text: '程序入口 main', color: 'blue', step: 1 });
+        if (step >= 2) items.push({ id: 's2', icon: '📦', text: '声明变量 sum=0', color: 'blue', step: 2 });
+        if (step >= 3) items.push({ id: 's3', icon: '🔄', text: '进入 for: i=0', color: 'yellow', step: 3 });
+        if (step >= 6) items.push({ id: 's4', icon: '➕', text: 'sum += i → sum=0', color: 'green', step: 6 });
+        if (step >= 7) items.push({ id: 's5', icon: '🔄', text: 'i++ → i=1', color: 'yellow', step: 7 });
+        if (step >= 8) items.push({ id: 's6', icon: '➕', text: 'sum += i → sum=1', color: 'green', step: 8 });
+        if (step >= 9) items.push({ id: 's7', icon: '🔄', text: 'i++ → i=2', color: 'yellow', step: 9 });
+        if (step >= 10) items.push({ id: 's8', icon: '➕', text: 'sum += i → sum=3', color: 'green', step: 10 });
+        if (step >= 11) items.push({ id: 's9', icon: '🔄', text: 'i++ → i=3, 3<3? 否,退出', color: 'red', step: 11 });
+        if (step >= 12) items.push({ id: 's10', icon: '📟', text: 'printf 输出 sum=3', color: 'purple', step: 12 });
+        return items;
+      }, [step]);
+
+      const reversedExplanations = useMemo(() => [...explanations].reverse(), [explanations]);
+
+      const colorMap = {
+        blue: { bg: 'rgba(59,130,246,0.08)', border: '#3b82f6', text: 'text-blue-300', badge: 'bg-blue-500/20 border-blue-500/30 text-blue-300' },
+        yellow: { bg: 'rgba(250,204,21,0.08)', border: '#facc15', text: 'text-yellow-300', badge: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-300' },
+        green: { bg: 'rgba(16,185,129,0.08)', border: '#10b981', text: 'text-green-300', badge: 'bg-green-500/20 border-green-500/30 text-green-300' },
+        red: { bg: 'rgba(239,68,68,0.08)', border: '#ef4444', text: 'text-red-300', badge: 'bg-red-500/20 border-red-500/30 text-red-300' },
+        purple: { bg: 'rgba(168,85,247,0.08)', border: '#a855f7', text: 'text-purple-300', badge: 'bg-purple-500/20 border-purple-500/30 text-purple-300' },
+      };
+
+      const CodeLine = ({ num, children }) => {
+        const isCurrentLine = num === currentLine;
+        const isExecuted = executedLines.includes(num);
+        let flowClass = 'code-line-flow';
+        if (isCurrentLine) flowClass += ' is-current';
+        else if (isExecuted) flowClass += ' is-executed';
+        const bgStyle = isCurrentLine
+          ? 'linear-gradient(90deg, rgba(250,204,21,0.12), rgba(250,204,21,0.04) 50%, transparent)'
+          : undefined;
+        return (
+          <div ref={el => { if (el) lineRefs.current.set(num, el); }} className={`${flowClass} flex items-center min-h-[32px]`} style={{ background: bgStyle }}>
+            {isCurrentLine && (
+              <div className="absolute left-0 w-[3px] h-full rounded-full bg-yellow-400" style={{ boxShadow: '0 0 8px #facc15', animation: 'breathe 2s ease-in-out infinite' }} />
+            )}
+            <div className="w-8 flex-shrink-0 flex justify-center">
+              {isCurrentLine && (
+                <span className="text-base text-yellow-400" style={{ animation: 'arrowBounce 1.5s ease-in-out infinite' }}>▶</span>
+              )}
+            </div>
+            <div className={`w-7 text-right pr-3 flex-shrink-0 select-none text-xs transition-all duration-300 ${isCurrentLine ? 'text-yellow-400 font-bold' : 'text-gray-600'}`}>
+              {num}
+            </div>
+            <div className="flex-1 text-[13px] py-1.5 pr-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: children }} />
+          </div>
+        );
+      };
+
+      const highlightCode = (line) => {
+        return line
+          .replace(/(#include|#define|return|if|else|while|for|switch|case|int|void|char)/g, '<span class="text-purple-400">$1</span>')
+          .replace(/(printf|main|scanf)/g, '<span class="text-yellow-300">$1</span>')
+          .replace(/(["'].*?["'])/g, '<span class="text-green-400">$1</span>')
+          .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
+          .replace(/(sum|i)/g, (match) => `<span class="${highlightVar === match ? 'text-amber-400 font-bold bg-amber-500/20 px-1 rounded' : 'text-white'}">${match}</span>`);
+      };
+
+      return (
+        <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'linear-gradient(180deg, #0a0e17, #0d1219)' }}>
+          <div className="flex-shrink-0 px-4 py-2.5 flex items-center justify-between border-b border-white/5" style={{ background: 'linear-gradient(90deg, rgba(15,20,30,0.98), rgba(20,25,35,0.98))' }}>
+            <div className="flex items-center gap-3">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                <div className="w-3 h-3 rounded-full bg-green-500/80" />
+              </div>
+              <span className="text-sm text-gray-400">for_loop.c</span>
+              <span className="text-xs text-gray-600 px-2 py-0.5 bg-white/5 rounded">Step {step}/{maxSteps}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button onClick={prevStep} disabled={step <= 0} className="ctrl-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              </button>
+              <button onClick={() => setIsPlaying(!isPlaying)} className={`ctrl-btn ${isPlaying ? 'btn-pause' : 'btn-play'}`} style={{ minWidth: 80 }}>
+                {isPlaying ? <><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><span className="text-xs">暂停</span></> : <><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg><span className="text-xs">播放</span></>}
+              </button>
+              <button onClick={nextStep} disabled={step >= maxSteps} className="ctrl-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <div className="w-px h-5 bg-white/10 mx-1" />
+              <button onClick={reset} className="ctrl-btn btn-reset">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+              </button>
+              <button onClick={toggleFullscreen} className="ctrl-btn btn-fs" style={{ width: 34, height: 34, padding: 0 }}>⛶</button>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-gray-500">速度</span>
+              <input type="range" min="500" max="5000" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} style={{ width: 100 }} />
+            </div>
+          </div>
+          <div className="flex-1 flex overflow-hidden">
+            <div className="flex-[3] flex flex-col border-r border-white/5 overflow-hidden">
+              <div className="flex-1 overflow-auto py-3 relative" ref={codeContainerRef}>
+                {currentLine > 0 && linePositions.has(currentLine) && (
+                  <>
+                    <div className="exec-orb-trail absolute left-[18px] w-[6px] rounded-full" style={{
+                      top: Math.min(linePositions.get(prevLine) ?? linePositions.get(currentLine), linePositions.get(currentLine)) - 4,
+                      height: Math.abs((linePositions.get(currentLine) ?? 0) - (linePositions.get(prevLine) ?? linePositions.get(currentLine) ?? 0)) + 8,
+                      background: 'linear-gradient(180deg, rgba(250,204,21,0.05), rgba(250,204,21,0.15), rgba(250,204,21,0.05))',
+                      animation: 'orbTrail 2s ease-in-out infinite',
+                    }} />
+                    <div className="exec-orb absolute w-[10px] h-[10px] rounded-full" style={{
+                      '--orb-color': '#facc15',
+                      left: 16,
+                      top: linePositions.get(currentLine),
+                      transform: 'translateY(-50%)',
+                      background: 'radial-gradient(circle, #fef08a, #facc15)',
+                      animation: 'orbGlow 2s ease-in-out infinite',
+                    }} />
+                  </>
+                )}
+                {code.map((line, idx) => (
+                  <CodeLine key={idx} num={idx + 1}>{highlightCode(line)}</CodeLine>
+                ))}
+              </div>
+              <div className="h-[110px] flex-shrink-0 border-t border-white/5" style={{ background: 'rgba(0,0,0,0.4)' }}>
+                <div className="px-3 py-1.5 flex items-center gap-2 border-b border-white/5" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                  <div className="w-2 h-2 rounded-full bg-green-500 shadow shadow-green-500/40" />
+                  <span className="text-[11px] text-gray-500 font-medium">Terminal</span>
+                </div>
+                <div className="p-3 text-[13px] h-[78px] overflow-auto">
+                  <div className="text-gray-600 mb-1">$ ./for_loop</div>
+                  {output.map((line, i) => (
+                    <div key={i} className="anim-fade-in" style={{ animationDelay: `${i * 80}ms` }}>
+                      <span className="text-green-400">{line}</span>
+                    </div>
+                  ))}
+                  <span className={`${cursorVisible ? 'opacity-100' : 'opacity-0'} text-green-500 transition-opacity`}>▋</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex-[2] flex flex-col overflow-hidden p-3 gap-3">
+              <div className="glass-panel p-4">
+                <div className="text-[11px] text-gray-500 uppercase tracking-wider font-medium mb-3">📦 变量状态</div>
+                <div className="space-y-3">
+                  <div className={`relative p-3 rounded-xl border transition-all duration-300 ${highlightVar === 'sum' ? 'border-amber-400 bg-amber-500/10' : 'border-white/10 bg-white/5'}`} style={highlightVar === 'sum' ? { animation: 'boxPop 0.5s ease-out' } : {}}>
+                    <div className="text-[10px] text-gray-500 absolute -top-2 left-3 bg-[#0a0e17] px-2">int</div>
+                    <div className="text-lg font-bold text-white mt-1">
+                      sum <span className="text-gray-500">=</span>{' '}
+                      <span key={sum} className="text-amber-400" style={{ animation: 'valuePop 0.35s ease-out' }}>{sum}</span>
+                    </div>
+                  </div>
+                  <div className={`relative p-3 rounded-xl border transition-all duration-300 ${highlightVar === 'i' ? 'border-amber-400 bg-amber-500/10' : 'border-white/10 bg-white/5'}`} style={highlightVar === 'i' ? { animation: 'boxPop 0.5s ease-out' } : {}}>
+                    <div className="text-[10px] text-gray-500 absolute -top-2 left-3 bg-[#0a0e17] px-2">int</div>
+                    <div className="text-lg font-bold text-white mt-1">
+                      i <span className="text-gray-500">=</span>{' '}
+                      <span key={i} className="text-amber-400" style={{ animation: 'valuePop 0.35s ease-out' }}>{i}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="glass-panel flex-1 flex flex-col overflow-hidden">
+                <div className="flex-shrink-0 px-4 pt-4 pb-2 flex items-center justify-between">
+                  <div className="text-[11px] text-gray-500 flex items-center gap-2 uppercase tracking-wider font-medium">
+                    <span className="text-base">💡</span> Explanation
+                  </div>
+                  {explanations.length > 0 && (
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                      <span className="text-[10px] text-gray-600">{explanations.length} 条</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 overflow-auto px-4 pb-4" ref={msgScrollRef}>
+                  {step === 0 ? (
+                    <div className="flex items-center justify-center h-full">
+                      <div className="text-center text-gray-700 text-xs">
+                        <div className="text-2xl mb-2">🚀</div>
+                        <div>点击 <span className="text-green-400 font-bold">▶ 播放</span> 开始</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-1.5">
+                      {reversedExplanations.map((item, displayIndex) => {
+                        const c = colorMap[item.color];
+                        const isLatest = displayIndex === 0;
+                        const isNew = item.step === step;
+                        return (
+                          <div key={item.id} className={`flex items-start gap-2.5 px-3 py-2.5 rounded-xl relative ${isNew ? 'anim-bubble-up' : 'anim-push-up'}`}
+                            style={{
+                              background: isLatest ? `linear-gradient(135deg, ${c.bg}, ${c.bg.replace('0.08','0.15')})` : c.bg,
+                              borderLeft: `3px solid ${c.border}`,
+                              opacity: isLatest ? 1 : Math.max(0.4, 1 - displayIndex * 0.08),
+                              animation: isLatest ? 'newMsgGlow 2s ease-in-out infinite' : undefined,
+                            }}>
+                            <span className={`text-sm flex-shrink-0 mt-0.5 ${isLatest ? 'text-base' : ''}`}>{item.icon}</span>
+                            <span className={`${c.text} text-[12px] leading-relaxed flex-1 ${isLatest ? 'font-semibold' : ''}`}>{item.text}</span>
+                            {isLatest && <div className={`text-[9px] px-1.5 py-0.5 rounded-full border font-bold ${c.badge}`}>NEW</div>}
+                            <div className="text-[10px] text-gray-700 font-mono">#{item.step}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="h-1 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.03)' }}>
+            <div className="h-full transition-all duration-500 ease-out" style={{
+              width: `${(step / maxSteps) * 100}%`,
+              background: 'linear-gradient(90deg, #10b981, #3b82f6)',
+              boxShadow: '0 0 10px rgba(16,185,129,0.5)',
+            }} />
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
