@@ -565,7 +565,11 @@ function QuestionView({
       setInputs(['']);
     }
     setShowHint(false);
-    soundPlayedRef.current = false;
+    // 只在题目未回答过时重置音效标记
+    const hasAnswered = userAnswers && userAnswers.length > 0;
+    if (!hasAnswered) {
+      soundPlayedRef.current = false;
+    }
   }, [question]);
 
   useEffect(() => {
@@ -2622,6 +2626,14 @@ function TrainingView({
     const saved = JSON.parse(localStorage.getItem('c-trainer-user-answers') || '{}');
     if (saved[questionId]) {
       setUserAnswers(saved[questionId]);
+      // 已答题目，允许播放音效
+      soundPlayedRef.current = false;
+    } else {
+      setUserAnswers([]);
+      // 未答题目，禁止播放音效
+      soundPlayedRef.current = true;
+    }
+  };
     } else {
       setUserAnswers([]);
     }
