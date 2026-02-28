@@ -7457,7 +7457,7 @@ do {
 
   // ===== 函数 =====
   {
-    id: 58,
+    id: 10013,
     chapter: 'functions',
     type: 'fill',
     title: '函数定义',
@@ -7476,7 +7476,7 @@ do {
     }
   },
   {
-    id: 59,
+    id: 10014,
     chapter: 'functions',
     type: 'fill',
     title: '无返回值函数',
@@ -7495,7 +7495,7 @@ do {
     }
   },
   {
-    id: 60,
+    id: 10015,
     chapter: 'functions',
     type: 'output',
     title: '函数调用',
@@ -7518,7 +7518,7 @@ int main() {
     }
   },
   {
-    id: 61,
+    id: 10016,
     chapter: 'functions',
     type: 'output',
     title: '值传递',
@@ -7542,7 +7542,7 @@ int main() {
     }
   },
   {
-    id: 62,
+    id: 10017,
     chapter: 'functions',
     type: 'fill',
     title: '返回语句',
@@ -7564,7 +7564,7 @@ int main() {
     }
   },
   {
-    id: 63,
+    id: 10018,
     chapter: 'functions',
     type: 'output',
     title: '递归函数',
@@ -7584,7 +7584,7 @@ printf("%d", factorial(4));`,
     }
   },
   {
-    id: 64,
+    id: 10019,
     chapter: 'functions',
     type: 'output',
     title: 'static局部变量',
@@ -7610,7 +7610,7 @@ int main() {
     }
   },
   {
-    id: 65,
+    id: 10020,
     chapter: 'functions',
     type: 'debug',
     title: '函数声明缺失',
@@ -7634,7 +7634,7 @@ int main() {
     }
   },
   {
-    id: 66,
+    id: 10021,
     chapter: 'functions',
     type: 'output',
     title: '函数多次调用',
@@ -7653,7 +7653,7 @@ printf("%d", doubleIt(doubleIt(3)));`,
     }
   },
   {
-    id: 67,
+    id: 10022,
     chapter: 'functions',
     type: 'fill',
     title: '函数参数',
@@ -7674,7 +7674,7 @@ printf("%d", doubleIt(doubleIt(3)));`,
 
   // ===== 数组 =====
   {
-    id: 68,
+    id: 10023,
     chapter: 'arrays',
     type: 'fill',
     title: '数组声明',
@@ -7692,7 +7692,7 @@ printf("%d", doubleIt(doubleIt(3)));`,
     }
   },
   {
-    id: 69,
+    id: 10024,
     chapter: 'arrays',
     type: 'output',
     title: '数组下标',
@@ -7708,7 +7708,7 @@ printf("%d", arr[0]);`,
     }
   },
   {
-    id: 70,
+    id: 10025,
     chapter: 'arrays',
     type: 'output',
     title: '数组遍历',
@@ -7726,7 +7726,7 @@ for (int i = 0; i < 3; i++) {
     }
   },
   {
-    id: 71,
+    id: 10026,
     chapter: 'arrays',
     type: 'debug',
     title: '数组越界',
@@ -7745,7 +7745,7 @@ for (int i = 0; i < 3; i++) {
     }
   },
   {
-    id: 72,
+    id: 10027,
     chapter: 'arrays',
     type: 'output',
     title: '字符串长度',
@@ -7761,7 +7761,7 @@ printf("%lu %lu", strlen(str), sizeof(str));`,
     }
   },
   {
-    id: 73,
+    id: 10028,
     chapter: 'arrays',
     type: 'fill',
     title: '字符串初始化',
@@ -7779,7 +7779,7 @@ printf("%lu %lu", strlen(str), sizeof(str));`,
     }
   },
   {
-    id: 74,
+    id: 10029,
     chapter: 'arrays',
     type: 'output',
     title: '二维数组',
@@ -7795,7 +7795,7 @@ printf("%d", matrix[1][2]);`,
     }
   },
   {
-    id: 75,
+    id: 10030,
     chapter: 'arrays',
     type: 'output',
     title: '数组元素修改',
@@ -7812,7 +7812,7 @@ printf("%d %d %d", arr[0], arr[1], arr[2]);`,
     }
   },
   {
-    id: 76,
+    id: 10031,
     chapter: 'arrays',
     type: 'fill',
     title: '数组作为参数',
@@ -7829,7 +7829,7 @@ printf("%d %d %d", arr[0], arr[1], arr[2]);`,
     difficulty: 1
   },
   {
-    id: 77,
+    id: 10032,
     chapter: 'arrays',
     type: 'output',
     title: 'strcmp比较',
@@ -7847,7 +7847,7 @@ printf("%s", result < 0 ? "Less" : "NotLess");`,
 
   // ===== 指针陷阱 =====
   {
-    id: 78,
+    id: 10033,
     chapter: 'pointers',
     type: 'fill',
     title: '声明指针',
@@ -7861,7 +7861,7 @@ int ___①p = &a;`,
     difficulty: 1
   },
   {
-    id: 79,
+    id: 10034,
     chapter: 'pointers',
     type: 'fill',
     title: '取地址操作',
@@ -7875,7 +7875,7 @@ int *ptr = ___①x;  // ptr存储x的地址`,
     difficulty: 1
   },
   {
-    id: 80,
+    id: 10035,
     chapter: 'pointers',
     type: 'output',
     title: '解引用操作',
@@ -7905,7 +7905,7 @@ printf("%d", *p);`,
     }
   },
   {
-    id: 81,
+    id: 10036,
     chapter: 'pointers',
     type: 'output',
     title: '通过指针修改值',
@@ -7938,7 +7938,7 @@ printf("%d", a);`,
     }
   },
   {
-    id: 82,
+    id: 10037,
     chapter: 'pointers',
     type: 'debug',
     title: '野指针',
@@ -7952,7 +7952,7 @@ printf("%d", a);`,
     difficulty: 2
   },
   {
-    id: 83,
+    id: 10038,
     chapter: 'pointers',
     type: 'output',
     title: '指针与数组',
@@ -7969,7 +7969,7 @@ printf("%d", *p);`,
     }
   },
   {
-    id: 84,
+    id: 10039,
     chapter: 'pointers',
     type: 'output',
     title: '指针算术',
@@ -7987,7 +7987,7 @@ printf("%d", *p);`,
     }
   },
   {
-    id: 85,
+    id: 10040,
     chapter: 'pointers',
     type: 'output',
     title: '函数中的指针参数',
@@ -8011,7 +8011,7 @@ int main() {
     }
   },
   {
-    id: 86,
+    id: 10041,
     chapter: 'pointers',
     type: 'debug',
     title: '空指针解引用',
@@ -8028,7 +8028,7 @@ int main() {
     }
   },
   {
-    id: 87,
+    id: 10042,
     chapter: 'pointers',
     type: 'output',
     title: '指针与下标',
@@ -8045,7 +8045,7 @@ printf("%d %d", arr[1], *(p + 1));`,
     }
   },
   {
-    id: 88,
+    id: 10043,
     chapter: 'pointers',
     type: 'fill',
     title: 'malloc分配内存',
@@ -8059,7 +8059,7 @@ printf("%d %d", arr[1], *(p + 1));`,
     difficulty: 2
   },
   {
-    id: 89,
+    id: 10044,
     chapter: 'pointers',
     type: 'fill',
     title: '释放内存',
@@ -8075,7 +8075,7 @@ ___①(p);  // 释放内存`,
     difficulty: 2
   },
   {
-    id: 90,
+    id: 10045,
     chapter: 'pointers',
     type: 'debug',
     title: '内存泄漏',
@@ -8090,7 +8090,7 @@ ___①(p);  // 释放内存`,
     difficulty: 2
   },
   {
-    id: 91,
+    id: 10046,
     chapter: 'pointers',
     type: 'output',
     title: '指针的指针',
@@ -8125,7 +8125,7 @@ printf("%d", **pp);`,
     }
   },
   {
-    id: 92,
+    id: 10047,
     chapter: 'pointers',
     type: 'output',
     title: '字符串指针',
@@ -8143,7 +8143,7 @@ printf("%c", str[1]);`,
 
   // ===== 内存安全 =====
   {
-    id: 93,
+    id: 10048,
     chapter: 'memory',
     type: 'debug',
     title: '悬空指针',
@@ -8158,7 +8158,7 @@ printf("%c", str[1]);`,
     difficulty: 2
   },
   {
-    id: 94,
+    id: 10049,
     chapter: 'memory',
     type: 'debug',
     title: '缓冲区溢出',
@@ -8171,7 +8171,7 @@ printf("%c", str[1]);`,
     difficulty: 2
   },
   {
-    id: 95,
+    id: 10050,
     chapter: 'memory',
     type: 'fill',
     title: 'malloc返回值检查',
@@ -8188,7 +8188,7 @@ if (p == ___①) {
     difficulty: 2
   },
   {
-    id: 96,
+    id: 10051,
     chapter: 'memory',
     type: 'output',
     title: 'calloc与malloc',
@@ -8201,7 +8201,7 @@ free(arr);`,
     difficulty: 2
   },
   {
-    id: 97,
+    id: 10052,
     chapter: 'memory',
     type: 'debug',
     title: '重复释放',
@@ -8215,7 +8215,7 @@ free(arr);`,
     difficulty: 2
   },
   {
-    id: 98,
+    id: 10053,
     chapter: 'memory',
     type: 'fill',
     title: 'realloc调整大小',
@@ -8230,7 +8230,7 @@ arr = ___①(arr, 10 * sizeof(int));`,
     difficulty: 2
   },
   {
-    id: 99,
+    id: 10054,
     chapter: 'memory',
     type: 'output',
     title: '栈与堆',
@@ -8248,7 +8248,7 @@ test();`,
     difficulty: 2
   },
   {
-    id: 100,
+    id: 10055,
     chapter: 'memory',
     type: 'fill',
     title: '安全的字符串复制',
@@ -8266,7 +8266,7 @@ dest[sizeof(dest) - 1] = '\\0';`,
 
   // ===== 代码排序题 (新题型) =====
   {
-    id: 101,
+    id: 10056,
     chapter: 'basics',
     type: 'order',
     title: '排列出完整的 Hello World 程序',
@@ -8289,7 +8289,7 @@ dest[sizeof(dest) - 1] = '\\0';`,
     ]
   },
   {
-    id: 102,
+    id: 10057,
     chapter: 'variables',
     type: 'order',
     title: '排列：声明变量并输出',
@@ -8308,7 +8308,7 @@ dest[sizeof(dest) - 1] = '\\0';`,
     difficulty: 1
   },
   {
-    id: 103,
+    id: 10058,
     chapter: 'variables',
     type: 'order',
     title: '排列：读取用户输入并输出',
@@ -8328,7 +8328,7 @@ dest[sizeof(dest) - 1] = '\\0';`,
     difficulty: 2
   },
   {
-    id: 104,
+    id: 10059,
     chapter: 'control',
     type: 'order',
     title: '排列：for循环输出1到5',
@@ -8348,7 +8348,7 @@ dest[sizeof(dest) - 1] = '\\0';`,
     difficulty: 2
   },
   {
-    id: 105,
+    id: 10060,
     chapter: 'control',
     type: 'order',
     title: '排列：if-else判断成绩',
