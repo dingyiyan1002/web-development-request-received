@@ -465,6 +465,9 @@ function TypingArea({ code, userInput, onInput, onComplete, onBack }: TypingArea
     const elements: JSX.Element[] = [];
     const cursorPos = userInput.length; // 光标位置始终在已输入内容的末尾
 
+    console.log(`[renderCode] code.length=${code.length}, userInput.length=${userInput.length}, cursorPos=${cursorPos}`);
+    console.log(`[renderCode] userInput="${userInput}"`);
+
     for (let i = 0; i < code.length; i++) {
       const char = code[i];
       let className = 'text-slate-500';
@@ -472,11 +475,13 @@ function TypingArea({ code, userInput, onInput, onComplete, onBack }: TypingArea
       // 已输入的部分：检查是否正确
       if (i < cursorPos) {
         const userInputChar = userInput[i];
+        console.log(`[renderCode] i=${i}, char="${char}", userInputChar="${userInputChar}", match=${userInputChar === char}`);
         className = userInputChar === char ? 'text-cyan-300' : 'text-red-400 bg-red-500/20';
       }
 
       // 如果当前位置是光标位置，在字符前添加光标
       if (i === cursorPos) {
+        console.log(`[renderCode] Adding cursor BEFORE char at i=${i}, char="${char}"`);
         elements.push(<span key={`cursor-${i}`} className="bg-cyan-500/50 w-[2px] inline-block h-[1.2em] align-middle">&nbsp;</span>);
       }
 
@@ -495,6 +500,7 @@ function TypingArea({ code, userInput, onInput, onComplete, onBack }: TypingArea
 
     // 如果光标在最后，添加光标
     if (cursorPos === code.length) {
+      console.log(`[renderCode] Adding cursor at END, cursorPos=${cursorPos}===code.length=${code.length}`);
       elements.push(<span key="cursor-end" className="bg-cyan-500/50 w-[2px] inline-block h-[1.2em] align-middle">&nbsp;</span>);
     }
 
