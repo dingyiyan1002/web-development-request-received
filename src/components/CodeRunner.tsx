@@ -465,56 +465,68 @@ function TypingArea({ code, userInput, onInput, onComplete, onBack }: TypingArea
 
   const renderCode = useMemo(() => {
     const elements: JSX.Element[] = [];
-    const cursorIdx = userInput.length; // 光标位置
-
-    console.log('[TypingArea render] code.length=' + code.length + ', userInput.length=' + userInput.length + ', cursorIdx=' + cursorIdx);
-    console.log('[TypingArea render] userInput="' + userInput + '"');
+    const cursorIdx = userInput.length;
 
     for (let i = 0; i < code.length; i++) {
       const char = code[i];
-      let className = 'text-slate-500';     // 默认灰色（未输入）
-      const isCursor = (i === cursorIdx);   // 是否是光标位置
+      let className = 'text-slate-500';
+      const isCursor = (i === cursorIdx);
 
-      // 已输入的字符：检查对错
       if (i < cursorIdx) {
         const userInputChar = userInput[i];
         className = userInputChar === char
-          ? 'text-cyan-300'                   // 正确：青色
-          : 'text-red-400 bg-red-500/20';     // 错误：红色
+          ? 'text-cyan-300'
+          : 'text-red-400 bg-red-500/20';
       }
 
-      // 光标样式：给当前字符加左边框
-      const cursorStyle: React.CSSProperties | undefined = isCursor
-        ? { borderLeft: '2px solid #22d3ee' }
-        : undefined;
-
-      // 渲染字符
       if (char === '\n') {
-        console.log('[TypingArea render] i=' + i + ', char=\\n, isCursor=' + isCursor);
-        elements.push(
-          <React.Fragment key={i}>
-            <span className={className} style={cursorStyle}>{' '}</span>
-            <br />
-          </React.Fragment>
-        );
-      } else {
-        if (i >= code.length - 10) {  // 只输出最后 10 个字符的调试信息
-          console.log('[TypingArea render] i=' + i + ', char="' + char + '", isCursor=' + isCursor + ', className=' + className);
+        if (isCursor) {
+          // ✅ 换行符位置的光标用实体竖线元素
+          elements.push(
+            <React.Fragment key={i}>
+              <span
+                className="animate-pulse"
+                style={{
+                  display: 'inline-block',
+                  width: '2px',
+                  height: '1.2em',
+                  backgroundColor: '#22d3ee',
+                  verticalAlign: 'middle',
+                }}
+              />
+              <br />
+            </React.Fragment>
+          );
+        } else {
+          elements.push(
+            <React.Fragment key={i}>
+              <span className={className}>{' '}</span>
+              <br />
+            </React.Fragment>
+          );
         }
+      } else {
+        // 普通字符：用 border-left
+        const cursorStyle: React.CSSProperties | undefined = isCursor
+          ? { borderLeft: '2px solid #22d3ee' }
+          : undefined;
         elements.push(
           <span key={i} className={className} style={cursorStyle}>{char}</span>
         );
       }
     }
 
-    // 全部输入完毕，光标在最后面
+    // 全部输入完毕
     if (cursorIdx >= code.length) {
       elements.push(
-        <span key="cursor-end"
-              className="animate-pulse"
-              style={{ borderLeft: '2px solid #22d3ee' }}>
-          {'\u200B'}  {/* 零宽空格，保证元素可见 */}
-        </span>
+        <span key="cursor-end" className="animate-pulse"
+              style={{
+                display: 'inline-block',
+                width: '2px',
+                height: '1.2em',
+                backgroundColor: '#22d3ee',
+                verticalAlign: 'middle',
+              }} />
       );
     }
 
