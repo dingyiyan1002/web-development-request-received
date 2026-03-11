@@ -463,64 +463,49 @@ function TypingArea({ code, userInput, onInput, onComplete, onBack }: TypingArea
 
   const renderCode = useMemo(() => {
     const elements: JSX.Element[] = [];
+    const cursorIdx = userInput.length; // 光标位置
 
     for (let i = 0; i < code.length; i++) {
       const char = code[i];
-      let className = 'text-slate-500';
+      let className = 'text-slate-500';     // 默认灰色（未输入）
+      const isCursor = (i === cursorIdx);   // 是否是光标位置
 
-      if (i < userInput.length) {
+      // 已输入的字符：检查对错
+      if (i < cursorIdx) {
         const userInputChar = userInput[i];
         className = userInputChar === char
-          ? 'text-cyan-300'
-          : 'text-red-400 bg-red-500/20';
+          ? 'text-cyan-300'                   // 正确：青色
+          : 'text-red-400 bg-red-500/20';     // 错误：红色
       }
 
-      // ✅ 先放光标，再渲染字符（零宽度，不影响布局）
-      if (i === userInput.length) {
-        elements.push(
-          <span
-            key="cursor"
-            className="inline-block align-middle animate-pulse"
-            style={{
-              width: 0,
-              height: '1.2em',
-              borderLeft: '2px solid #22d3ee',
-              marginLeft: '-1px',
-              marginRight: '-1px',
-            }}
-          />
-        );
-      }
+      // 光标样式：给当前字符加左边框
+      const cursorStyle: React.CSSProperties | undefined = isCursor
+        ? { borderLeft: '2px solid #22d3ee' }
+        : undefined;
 
       // 渲染字符
       if (char === '\n') {
         elements.push(
           <React.Fragment key={i}>
-            <span className={className}>{' '}</span>
+            <span className={className} style={cursorStyle}>{' '}</span>
             <br />
           </React.Fragment>
         );
       } else {
         elements.push(
-          <span key={i} className={className}>{char}</span>
+          <span key={i} className={className} style={cursorStyle}>{char}</span>
         );
       }
     }
 
-    // 全部输入完毕，光标在最后
-    if (userInput.length >= code.length) {
+    // 全部输入完毕，光标在最后面
+    if (cursorIdx >= code.length) {
       elements.push(
-        <span
-          key="cursor-end"
-          className="inline-block align-middle animate-pulse"
-          style={{
-            width: 0,
-            height: '1.2em',
-            borderLeft: '2px solid #22d3ee',
-            marginLeft: '-1px',
-            marginRight: '-1px',
-          }}
-        />
+        <span key="cursor-end"
+              className="animate-pulse"
+              style={{ borderLeft: '2px solid #22d3ee' }}>
+          {'\u200B'}  {/* 零宽空格，保证元素可见 */}
+        </span>
       );
     }
 
